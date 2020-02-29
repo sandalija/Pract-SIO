@@ -1,16 +1,34 @@
 
 import csv
 import pymysql
+import os
+from os.path import expanduser
 
-DATASET = '/home/sergio/SIO/dataset.csv'
+
+
+DATASET = 'dataset.csv'
+
+
+def getDatasetDir():
+if os.name == 'nt':
+    return (expanduser("~") + str("\\") + DATASET)
+else:
+    return (expanduser("~") + str("/") + DATASET)
+
+home = getDir()
+print (home)
 
 try:
     db = pymysql.connect(host='localhost',
-                        user='root', 
-                        passwd='', 
-                        database='root')
+                        user='user', 
+                        passwd='user', 
+                        database='SIO')
 except Exception as e:
+    print ("Connection failed")
     print(e)
+    raise
+
+print ("\n\n Connected to ")
 
 
 cursor = db.cursor()
