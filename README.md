@@ -19,4 +19,10 @@ CREATE DATABASE SIO;
 
 A partir de aquí, debes de poder iniciar sesión como ``user`` desde una terminal. La conexión también funciona desde MySQL Workbench
 
-2. Instalar el connector de Python con Mysql ``pymysql``
+2. Copiar el archivo dataset, habiendo eliminado la primera fila, en la carpeta ``/var/lib/mysql-files`` y insertarlo en la tabla SIO.dataset. Ejecuta el fichero ``insert_clean.sql`` para insertar los datos y transformar los ``99`` a ``null''
+
+````sql
+SOURCE ~/insert_clean.sql
+````
+
+3. Instalar el connector de Python con Mysql ``pymysql``
