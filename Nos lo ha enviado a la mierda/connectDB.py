@@ -113,6 +113,6 @@ conn = __connectDB__('localhost', 'SIO', 'user', 'user')
 print("\n2.\n")
 createTableSIO(conn, 'SIO', 'dataset')
 print("\n3.\n")
-loadCSV(getDatasetDir(), conn, 'SIO', 'dataset')
+loadCSV(getDatasetDir(), conn, 'SIO', 'dataset', 'valorations')
 
 
