@@ -2,10 +2,6 @@ CREATE DATABASE IF NOT EXISTS SIO;
 
 USE SIO;
 
-DELETE FROM users;
-DELETE FROM restaurants;
-DELETE FROM valorations;
-
 CREATE TABLE IF NOT EXISTS users
 (
     User_name varchar(50),
@@ -20,8 +16,8 @@ CREATE TABLE IF NOT EXISTS restaurants
 
 CREATE TABLE IF NOT EXISTS valorations
 (
-    User_name int NOT NULL,
-    Restaurant_name int NOT NULL,
+    User_name varchar(50) NOT NULL,
+    Restaurant_name varchar(50) NOT NULL,
     Valoration float NOT NULL,
     FOREIGN KEY (User_name) REFERENCES users (User_name),
     FOREIGN KEY (Restaurant_name) REFERENCES restaurants (Restaurant_name),
