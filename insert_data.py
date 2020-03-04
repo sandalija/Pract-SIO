@@ -30,12 +30,12 @@ allRestaurants = ['Restaurant1', ' Restaurant2', ' Restaurant3', ' Restaurant4',
 def __connectDB__(host, database, user, password):
 	try:
 		connection = pymysql.connect(host=host,
-						user=user, 
-						passwd=password, 
-						database=database)  
+						user=user,
+						passwd=password,
+						database=database)
 		print ("\n\nConnected to " +  host + "." + database)
 		# cursor = db.cursor()
-		return connection 
+		return connection
 	except Exception as e:
 		print ("Connection failed")
 		print(e)
@@ -66,21 +66,20 @@ def loadCSV(dataFile, connection, db, table):
 		row_count = result[0]
 		print ("row count = " + str(row_count))
 		if row_count == 0:
-			print ("INSERT INTO users (User_name) VALUES (%s)", (user))
+			#print ("INSERT INTO users (User_name) VALUES (%s)", (user))
 			cursor.execute("INSERT INTO " + db + ".users (User_name) VALUES (%s)", (user))
 
 		connection.commit()
 		for i in range (1, len(splitedRow)):
-			if (float(splitedRow[i]) != 99): 
+			if (float(splitedRow[i]) != 99):
 				restaurant = "Restaurant"+str(i)
-				print (f"User: {user} Rest: {restaurant} Value: {splitedRow[i]}")
+				#print (f"User: {user} Rest: {restaurant} Value: {splitedRow[i]}")
 				cursor.execute("INSERT INTO " + db + ".valorations (User_name, Restaurant_name, Valoration) \
 					VALUES (%s, %s, %s)", (user, restaurant, str(splitedRow[i])))
-	
+
 	connection.commit()
 
 
 conn = __connectDB__('localhost', 'SIO', 'user', 'user')
-loadCSV('D:/Pract-SIO/dataset.csv', conn, 'SIO', 'valorations')
+loadCSV('/home/mprats/Escritorio/SIO/Pract-SIO/dataset.csv', conn, 'SIO', 'valorations')
 print ("end")
-
