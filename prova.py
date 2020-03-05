@@ -1,5 +1,5 @@
 import pymysql
-
+import pandas as pd
 
 def __connectDB__(host, database, user, password):
 	try:
@@ -19,10 +19,20 @@ def __connectDB__(host, database, user, password):
 conn = __connectDB__('localhost', 'SIO', 'user', 'user')
 
 cursor = conn.cursor()
-cursor.execute("SELECT * FROM SIO.valorations")
+#SELECT AVG(Valoration) from valorations v
+
+data= cursor.execute("SELECT User_name, COUNT(*) as TotalRestaurants, SUM(Valoration) as Valoracionstotals, AVG(Valoration) as Mitja FROM SIO.valorations v GROUP BY User_name")
+#data= cursor.fetchone()
+#print (f"printo cursor:  {data}")
 result= cursor.fetchall()
+#print(result)
+
+#SELECT User_name, COUNT(*), SUM(Valoration) FROM SIO.valorations v GROUP BY User_name
+
+
+
 #es pot fer també bucle fetchone()
 users=""
 for i in result:
-    users=users+""+str(result)
-print ('end')
+    print(i[0],i[1],i[2])
+#print (f'{users}')

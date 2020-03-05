@@ -1,0 +1,35 @@
+
+Recomptes+mitjanes de tots els usuaris:
+Usuari+TotalValidacions+SumaValoracions+MitjaUsuari
+	SELECT User_name, COUNT(*) as TotalRestaurants, TRUNCATE(SUM(Valoration),2) as Valoracionstotals, AVG(Valoration) as Mitja 
+		FROM SIO.valorations v 
+		GROUP BY User_name
+
+Total valoracions:
+	SELECT COUNT(*) from valorations  
+	
+	= 4096360
+
+Mitjana total 
+	SELECT TRUNCATE(AVG(Valoration),2) from valorations
+
+	=0.74
+
+
+
+
+
+Preguntes:
+-Quants usuaris diferents hi ha a la base de dades?
+	Select count(*) from users 
+
+	=73.421
+
+
+-Quants "ítems" diferents hi ha a la base de dades?
+	Select count(*) from restaurants
+	
+	=100
+
+
+
