@@ -27,6 +27,10 @@ allRestaurants = ['Restaurant1', ' Restaurant2', ' Restaurant3', ' Restaurant4',
     Restaurant93', ' Restaurant94', ' Restaurant95', ' Restaurant96', ' \
     Restaurant97', ' Restaurant98', ' Restaurant99', ' Restaurant100']
 
+allUsers = []
+
+
+
 def __connectDB__(host, database, user, password):
 	try:
 		connection = pymysql.connect(host=host,
@@ -64,7 +68,7 @@ def loadCSV(dataFile, connection, db, table):
 		# gets the number of rows affected by the command executed
 		result=cursor.fetchone()
 		row_count = result[0]
-		print ("row count = " + str(row_count))
+		# ("row count = " + str(row_count))
 		if row_count == 0:
 			#print ("INSERT INTO users (User_name) VALUES (%s)", (user))
 			cursor.execute("INSERT INTO " + db + ".users (User_name) VALUES (%s)", (user))
@@ -79,7 +83,77 @@ def loadCSV(dataFile, connection, db, table):
 
 	connection.commit()
 
+# Retorna la media de todas las valoraciones
+def getAllAverage(connection, db, table):
+	cursor = connection.cursor()
+	cursor.execute("SELECT TRUNCATE(AVG(Valoration),2) from valorations")
+	result = cursor.fetchall()
+	return result[0][0]
+
+# Retorna la cantidad de valoraciones
+def countUsers(connection, db, table):
+	cursor = connection.cursor()
+	result = cursor.execute("Select count(*) from users")
+	result = cursor.fetchall()
+	return result[0][0]
+
+# Retorna los datos de valoraciones por usuario
+def getAveragePerUsers(connection, db, table, verbose):
+	cursor = connection.cursor()
+	result = cursor.execute("SELECT User_name, COUNT(*) \
+		as TotalRestaurants, TRUNCATE(SUM(Valoration),2) as Valoracionstotals, AVG(Valoration) as Mitja \
+		FROM SIO.valorations v GROUP BY User_name")
+	if (verbose):
+		print ("Getting COUNT, SUM, AVG of each user")
+	result = cursor.fetchall()
+	return result
+
+# Retorna los datos de valoraciones por restaurante
+def getAveragePerRest(connection, db, table, verbose):
+	cursor = connection.cursor()
+	result = cursor.execute("SELECT Restaurant_name, COUNT(*) \
+		as TotalRestaurants, TRUNCATE(SUM(Valoration),2) as Valoracionstotals, AVG(Valoration) as Mitja \
+		FROM SIO.valorations v GROUP BY Restaurant_name")
+	if (verbose):
+		print ("Getting COUNT, SUM, AVG of each user")
+	result = cursor.fetchall()
+	return result
+
+# Retorna los datos de valoraciones por restaurante
+def getAllMode(connection, db, table, verbose):
+	cursor = connection.cursor()
+	result = cursor.execute("SELECT Valoration, COUNT(*) \
+		as TotalRestaurants, TRUNCATE(SUM(Valoration),2) as Valoracionstotals, AVG(Valoration) as Mitja \
+		FROM SIO.valorations v GROUP BY Restaurant_name")
+	if (verbose):
+		print ("Getting COUNT, SUM, AVG of each user")
+	result = cursor.fetchall()
+	return result
+
 
 conn = __connectDB__('localhost', 'SIO', 'user', 'user')
-loadCSV('/home/mprats/Escritorio/SIO/Pract-SIO/dataset.csv', conn, 'SIO', 'valorations')
+#loadCSV('/home/sergio/Pract-SIO/dataset.csv', conn, 'SIO', 'valorations')
+
+# Number of users and list with them
+n_users = countUsers(conn, 'SIO', 'users')
+print ("# users " + str(n_users))
+for n in range(0, n_users):
+	allUsers.append("Users"+str(n))
+
+# Average of all users
+average = getAllAverage(conn, 'SIO', 'valorations')
+print ("AVERAGE: " + str(average))
+
+# Average per user
+averageUser =  getAveragePerUsers(conn, 'SIO', 'users', True)
+print ("Averange per user")
+print(averageUser)
+
+# Average per rest
+averageRest =  getAveragePerRest(conn, 'SIO', 'users', True)
+print ("Averange per user")
+print(averageUser)
+
+
+
 print ("end")
