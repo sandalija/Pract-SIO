@@ -1,6 +1,7 @@
 import pymysql
 import pandas as pd
 import matplotlib.pyplot as plt
+import datetime
 
 
 # Retorna la cantidad de valoraciones
@@ -103,19 +104,26 @@ def getGraphPerRest(connection, db, table, rest, verbose):
 	df.plot(kind='scatter', y=rest, x='User', color='red')
 
 # Retorna los datos de valoraciones por restaurante
-def getGraphPeruser(connection, db, table, rest, verbose):
+def getGraphPeruser(connection, db, table, user, verbose):
 	cursor = connection.cursor()
-	result = cursor.execute(f"SELECT Valoration, Restaurant_name FROM SIO.valorations v WHERE User_name = '{rest}'")
+	result = cursor.execute(f"SELECT Valoration, Restaurant_name FROM SIO.valorations v WHERE User_name = '{user}'")
 	if (verbose):
-		print (f"Getting mode for restaurant {rest}")
+		print (f"Getting mode for restaurant {user}")
 	result = cursor.fetchall()
 	result_clean = []
 	users = []
 	for i in result:
 		result_clean.append(i[0])
 		users.append(i[1])
-	df = pd.DataFrame({rest: tuple(result_clean), 
+	df = pd.DataFrame({user: tuple(result_clean), 
 					'Rest': tuple(users)})
-	print (df)
+	df2 = pd.DataFrame([], columns=['dataFor','total'])
+	df2['dataFor'] = [datetime.datetime(2013, 9, 11),datetime.datetime(2013, 9, 12),datetime.datetime(2013, 9, 13),datetime.datetime(2013, 9, 14),datetime.datetime(2013, 9, 15),datetime.datetime(2013, 9, 16),datetime.datetime(2013, 9, 17)]
+	df2['total'] = [11,15,17,18,19,20,21]
+	print (df2)
 	# print (df)
-	df.plot(kind='scatter', y=rest, x='User', color='red')
+	#df2.plot(kind='line', y=user, x='Rest', color='red')
+	ax = df2.plot(kind='line')
+	fig = ax.get_figure()
+	fig.savefig('user1-rest.pdf')
+
