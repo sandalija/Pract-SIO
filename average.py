@@ -2,7 +2,7 @@ import pymysql
 import pandas as pd
 import matplotlib.pyplot as plt
 import datetime
-
+import numpy as np
 
 # Retorna la cantidad de valoraciones
 def countUsers(connection, db, table):
@@ -110,11 +110,60 @@ def getGraphPeruser(connection, db, table, user, verbose):
 	if (verbose):
 		print (f"Getting mode for restaurant {user}")
 	result = cursor.fetchall()
-	result_clean = []
-	users = []
+	rests = []
+	valors = []
 	for i in result:
-		result_clean.append(i[0])
-		users.append(i[1])
+		valors.append(i[0])
+		rests.append(str(i[1]).replace('Restaurant', ''))
+	df = pd.DataFrame({'Valor': tuple(valors), 
+		'Rest': tuple(rests)}, 
+		columns = ['Valor', 'Rest'])
+	df = df.sort_values(by='Valor')
+	print (df)
+	df.plot.scatter(x='Rest', y='Valor')
+	plt.xlabel('x - axis') 
+	# frequency label 
+	plt.ylabel('y - axis') 
+	# plot title 
+	plt.title('My scatter plot!') 
+	# showing legend 
+	plt.legend() 
+	plt.show()
+
+# Muestra el histograma de valoraciones por usuario
+def getHistoPeruser(connection, db, table, user, verbose):
+	cursor = connection.cursor()
+	result = cursor.execute(f"SELECT Valoration, Restaurant_name FROM SIO.valorations v WHERE User_name = '{user}'")
+	if (verbose):
+		print (f"Getting mode for restaurant {user}")
+	result = cursor.fetchall()
+	rests = []
+	valors = []
+	for i in result:
+		valors.append(i[0])
+		rests.append(str(i[1]).replace('Restaurant', ''))
+	df = pd.DataFrame({'Valor': tuple(valors), 
+		'Rest': tuple(rests)}, 
+		columns = ['Valor', 'Rest'])
+	print (df)
+	df.plot.hist(x='Rest', y='Valor')
+	plt.xlabel('RESTAUANTS')
+	plt.ylabel('FREQUENCY')
+	plt.show()
+	"""# plt.scatter(result_clean, users, s=30, c=colors, cmap='viridis')
+	plt.plot(result_clean, users, '-ok')
+	plt.xlabel('x - axis') 
+	# frequency label 
+	plt.ylabel('y - axis') 
+	# plot title 
+	plt.title('My scatter plot!') 
+	# showing legend 
+	plt.legend() 
+
+	
+	# function to show the plot 
+	plt.show() """
+	"""
 	df = pd.DataFrame({user: tuple(result_clean), 
 					'Rest': tuple(users)})
 	df2 = pd.DataFrame([], columns=['dataFor','total'])
@@ -126,4 +175,5 @@ def getGraphPeruser(connection, db, table, user, verbose):
 	ax = df2.plot(kind='line')
 	fig = ax.get_figure()
 	fig.savefig('user1-rest.pdf')
+	"""
 
