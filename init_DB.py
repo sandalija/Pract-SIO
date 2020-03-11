@@ -1,6 +1,6 @@
 import pymysql
 import csv
-import average as aver
+import functions as func
 
 allRestaurants = ['Restaurant1', ' Restaurant2', ' Restaurant3', ' Restaurant4', ' \
     Restaurant5', ' Restaurant6', ' Restaurant7', ' Restaurant8', ' \
@@ -32,7 +32,7 @@ allUsers = []
 
 def __getUsersName__(conn, db, table):
 		# Number of users and list with them
-	n_users = aver.countUsers(conn, 'SIO', 'users')
+	n_users = func.countUsers(conn, 'SIO', 'users')
 	#print ("\n# users " + str(n_users))
 	for n in range(0, n_users):
 		allUsers.append("Users"+str(n))

@@ -2,6 +2,10 @@ CREATE DATABASE IF NOT EXISTS SIO;
 
 USE SIO;
 
+DROP TABLE users;
+DROP TABLE restaurants;
+DROP TABLE valorations;
+
 CREATE TABLE IF NOT EXISTS users
 (
     User_name varchar(50),

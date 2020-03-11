@@ -2,4 +2,4 @@
 *.xlsx
 *.csv
 
-__pycahce__/*
+__pycache__/*

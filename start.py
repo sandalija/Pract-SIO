@@ -24,6 +24,7 @@ iDB.__getUsersName__(conn, 'SIO', 'valorations')
 modo = int(input('Enter your input:'))
 print ("Modo " + str(modo))
 if (modo == 1):
+    iDB.loadCSV('C:\Pract-SIO/Pract-SIO/dataset.csv', conn, 'SIO', 'users')
     func.getGraphPeruser(conn, 'SIO', 'users', 'User1', True)
 else:
     # funcage of all users
