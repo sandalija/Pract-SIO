@@ -26,3 +26,6 @@ SOURCE ~/insert_clean.sql
 ````
 
 3. Instalar el connector de Python con Mysql ``pymysql``
+
+## Acerca de
+En `start.py` está el *main* del programa. En init_DB se inicia la DB con la función `loadCSV(..)`, y contiene la lista de usuarios (creada de manera dinámica con `__getUsersName__`) y la lista de restaurantes creada de manera *hardcoded*.
