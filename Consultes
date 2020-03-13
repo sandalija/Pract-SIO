@@ -1,16 +1,16 @@
 
 Recomptes+mitjanes de tots els usuaris:
 Usuari+TotalValidacions+SumaValoracions+MitjaUsuari
-	SELECT User_name, COUNT(*) as TotalRestaurants, TRUNCATE(SUM(Valoration),2) as Valoracionstotals, AVG(Valoration) as Mitja 
-		FROM SIO.valorations v 
+	SELECT User_name, COUNT(*) as TotalRestaurants, TRUNCATE(SUM(Valoration),2) as Valoracionstotals, AVG(Valoration) as Mitja
+		FROM SIO.valorations v
 		GROUP BY User_name
 
 Total valoracions:
-	SELECT COUNT(*) from valorations  
-	
+	SELECT COUNT(*) from valorations
+
 	= 4096360
 
-Mitjana total 
+Mitjana total
 	SELECT TRUNCATE(AVG(Valoration),2) from valorations
 
 	=0.74
@@ -21,15 +21,55 @@ Mitjana total
 
 Preguntes:
 -Quants usuaris diferents hi ha a la base de dades?
-	Select count(*) from users 
+	Select count(*) from users
 
 	=73.421
 
 
 -Quants "ítems" diferents hi ha a la base de dades?
 	Select count(*) from restaurants
-	
+
 	=100
 
 
 
+	Alter table users add column AvgValorations float
+	UPDATE users u set AvgValorations=(SELECT AVG(Valoration) from valorations v where v.User_name =u.User_name)
+
+	desviacio amb sql --> usuaris(per saber quins son fiables)
+			restaurants per saber si son bons
+
+
+
+	Restaurants, top 10 de mitjana i top 10 de total valoracions
+	Select Restaurant_name, AVG(Valoration) as mitjana, count(*) as contador
+		from valorations
+		group by Restaurant_name
+		order by mitjana DESC
+		limit 10
+
+	Select Restaurant_name, AVG(Valoration) as valor1, count(*) as contador
+		from valorations v1
+		group by Restaurant_name
+		order by contador DESC
+		limit 10
+
+	usuaris
+	Select User_name, AVG(Valoration) as mitjana, count(*) as contador
+			from valorations
+			group by User_name
+			order by mitjana desc
+			limit 10
+	Select User_name, AVG(Valoration) as mitjana, count(*) as contador
+			from valorations
+			group by User_name
+			order by contador desc
+			limit 30
+
+	Select Restaurant_name, count(*) from valorations v where Valoration>8 group by Restaurant_name
+
+	#views
+SELECT User_name, AVG(Valoration), Count(*) from valorations group by User_name
+SELECT Restaurant_name, AVG(Valoration), Count(*) from valorations group by Restaurant_name
+
+	Select Restaurant_name, count(*) from valorations v wher group by Restaurant_name
