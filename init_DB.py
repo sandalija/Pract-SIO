@@ -34,8 +34,8 @@ def __getUsersName__(conn, db, table):
 		# Number of users and list with them
 	n_users = func.countUsers(conn, 'SIO', 'users')
 	#print ("\n# users " + str(n_users))
-	for n in range(0, n_users):
-		allUsers.append("Users"+str(n))
+	for n in range(1, n_users):
+		allUsers.append("User"+str(n))
 
 def __connectDB__(host, database, user, password):
 	try:
