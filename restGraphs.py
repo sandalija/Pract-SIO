@@ -52,4 +52,5 @@ def histogramaRestAverage(conn):
 
 
 conn = iDB.__connectDB__('localhost', 'SIO', 'user', 'user')
+dispersioRestAverage(conn)
 histogramaRestAverage(conn)

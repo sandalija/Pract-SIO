@@ -1,6 +1,6 @@
 USE SIO;
-DROP TABLE UserData;
-DROP TABLE RestaurantData;
+DROP TABLE IF EXISTS UserData;
+DROP TABLE IF EXISTS RestaurantData;
 
 CREATE TABLE IF NOT EXISTS UserData
 (
