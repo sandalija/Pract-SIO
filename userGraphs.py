@@ -24,7 +24,7 @@ def histrogramaUserAverage(conn):
 
 	plt.style.use('seaborn-white')
 	df.hist(rwidth=0.97) # Mostra la gràfica
-	plt.title('Histograma de la mitja de cada usuari')
+	df.plot.kde()
 	plt.show()
 
 def dispersioUserDesv(conn):
@@ -48,6 +48,7 @@ def dispersioUserDesv(conn):
 	plt.title('Dispersió de la desviació estándar per cada usuari')
 	plt.show()
 
+# Peta
 def dispersioAndModeUserDesv(conn):
 	cursor = conn.cursor()
 	result = cursor.execute(f"SELECT Desv_pobl, Moda, User_name FROM SIO.UserData v")
@@ -74,9 +75,9 @@ def dispersioAndModeUserDesv(conn):
 def possiblesUsuarisFalsos(conn):
 	cursor = conn.cursor()
 	result = cursor.execute(f"Select User_name, Mitja, Recompte, Desv_pobl, Mediana \
-		from UserData u where (mitja>8 or mitja <-8) \
-		and (desv_pobl < 1.25 or desv_pobl > 0.75) \
-		and (recompte > 60) group by User_name")
+		from UserData u where (mitja > 8 or mitja < -8) \
+		and (desv_pobl < -2.9 or desv_pobl > 3.93) \
+		group by User_name")
 	result = cursor.fetchall()
 
 	# Fiquem les dades que ens interesa
@@ -108,9 +109,108 @@ def possiblesUsuarisFalsos(conn):
 	print (aux)
 	print ("Son un total de " + str(len(aux)))
 
+def dispersioUserMitja(conn):
+	cursor = conn.cursor()
+	result = cursor.execute(f"SELECT Mitja, User_name FROM SIO.UserData v")
+	result = cursor.fetchall()
+
+	# Fiquem les dades que ens interesa
+	valors = []
+	users = []
+	for i in result:
+		valors.append(i[0])
+		users.append(str(i[1]).replace('User', ''))
+	# Crear el pandas dataframe
+	df = pd.DataFrame({'Mitja': tuple(valors),
+		'Users': tuple(users)},
+		columns = ['Mitja', 'Users'])
+
+	plt.style.use('seaborn-white')
+	df.plot(kind='scatter', x='Users', y='Mitja') # Mostra la gràfica
+	plt.title('Mitja per cada usuari')
+	plt.show()
+
+def densitivyRestUser(conn, user):
+	cursor = conn.cursor()
+	result = cursor.execute(f"SELECT Valoration, User_name FROM SIO.valorations v WHERE User_name = '{user}';")
+	result = cursor.fetchall()
+
+	# Fiquem les dades que ens interesa
+	valors = []
+	rests = []
+	for i in result:
+		valors.append(i[0])
+		rests.append(str(i[1]).replace('User', ''))
+	# Crear el pandas dataframe
+	df = pd.DataFrame({'Mitja': tuple(valors),
+		'User': tuple(rests)},
+		columns = ['Mitja', 'User'])
+	print (df)
+	df.plot(kind='density')
+	df.hist(rwidth=0.97)
+	plt.show()
+
+def percentilsDesvUser(connection):
+	cursor = connection.cursor()
+	result = cursor.execute("Select Desv_pobl from SIO.UserData")
+	result = cursor.fetchall()
+	result_clean = []
+	users = []
+	for i in result:
+		result_clean.append(i[0])
+	df = pd.DataFrame({'Valor': tuple(result_clean)}, columns=['Valor'])
+	print (df)
+	print ("Percentil 10 " + str(df['Valor'].quantile(0.10)))
+	print ("Percentil 25 " + str(df['Valor'].quantile(0.25)))
+	print ("Mediana " + str(df['Valor'].quantile(0.50)))
+	print ("Percentil 75 " + str(df['Valor'].quantile(0.75)))
+	print ("Percentil 90 " + str(df['Valor'].quantile(0.90)))
+
+	df.boxplot()
+	plt.style.use('seaborn-white')
+	plt.title("Diagrama de caixes de la dispersió de les desviacions dels usuari")
+	plt.show()
+	df.hist(rwidth=0.97)
+	plt.style.use('seaborn-white')
+	plt.title("Histograma de la dispersió de les desviacions dels usuaris")
+	plt.show()
+
+def percentilsAverageUser(connection):
+	cursor = connection.cursor()
+	result = cursor.execute("Select Mitja from SIO.UserData")
+	result = cursor.fetchall()
+	result_clean = []
+	users = []
+	for i in result:
+		result_clean.append(i[0])
+	df = pd.DataFrame({'Valor': tuple(result_clean)}, columns=['Valor'])
+	print (df)
+	print ("Percentil 10 " + str(df['Valor'].quantile(0.10)))
+	print ("Percentil 25 " + str(df['Valor'].quantile(0.25)))
+	print ("Mediana " + str(df['Valor'].quantile(0.50)))
+	print ("Percentil 75 " + str(df['Valor'].quantile(0.75)))
+	print ("Percentil 90 " + str(df['Valor'].quantile(0.90)))
+
+	df.boxplot()
+	plt.style.use('seaborn-white')
+	plt.title("Diagrama de la dispersió de les mitjes dels usuaris")
+	plt.show()
+	df.hist(rwidth=0.97)
+	plt.style.use('seaborn-white')
+	plt.title("Histograma de la dispersió de les mitjes dels usuaris")
+	plt.show()
+
 conn = iDB.__connectDB__('localhost', 'SIO', 'user', 'user')
 histrogramaUserAverage(conn)
 dispersioUserDesv(conn)
 dispersioAndModeUserDesv(conn)
+percentilsDesvUser(conn)
+percentilsAverageUser(conn)
 possiblesUsuarisFalsos(conn)
+densitivyRestUser(conn, 'User1')
+densitivyRestUser(conn, 'User2')
+densitivyRestUser(conn, 'User3')
+densitivyRestUser(conn, 'User4')
+densitivyRestUser(conn, 'User5')
+
 
