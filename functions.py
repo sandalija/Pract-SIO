@@ -8,10 +8,10 @@ import numpy as np
 
 # Algunes parts estàn hardcoded, i ho hauriem d'arreglar
 
-""" 
+"""
 Les funcions acostumen a tenir el mateix esquema:
 	1. A partir de la connexió del paràmetre, fa una query al MySQL
-	2. Tracta les dades, a vegades com un Pandas Dataframe 
+	2. Tracta les dades, a vegades com un Pandas Dataframe
 Els pandas Dataframes són estructures que permeten analitzar un conjunt de dades
 https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html
 i tenen diferents mètodes per a calcular mitjanes, desviacions, .. i inclós gràfics
@@ -115,7 +115,7 @@ def getGraphPerRest(connection, db, table, rest, verbose):
 		users.append(i[1])
 
 	# Crear el pandas dataframe
-	df = pd.DataFrame({rest: tuple(result_clean), 
+	df = pd.DataFrame({rest: tuple(result_clean),
 					'User': tuple(users)})
 
 	print (df)	# Mostra les dades per pantalla
@@ -137,18 +137,18 @@ def getGraphPeruser(connection, db, table, user, verbose):
 		valors.append(i[0])
 		rests.append(str(i[1]).replace('Restaurant', ''))
 	# Crear el pandas dataframe
-	df = pd.DataFrame({'Valor': tuple(valors), 
-		'Rest': tuple(rests)}, 
+	df = pd.DataFrame({'Valor': tuple(valors),
+		'Rest': tuple(rests)},
 		columns = ['Valor', 'Rest'])
 
 	df = df.sort_values(by='Valor') # Ordenar les ades per una millor visualtzació
 	print (df)  # Mostra les dades per pantalla
 
 	df.plot.scatter(x='Rest', y='Valor')
-	plt.xlabel('x - axis') 
-	plt.ylabel('y - axis') 
-	plt.title('My scatter plot!') 
-	plt.legend() 
+	plt.xlabel('x - axis')
+	plt.ylabel('y - axis')
+	plt.title('My scatter plot!')
+	plt.legend()
 	plt.show()
 
 # Muestra el histograma de valoraciones por usuario
@@ -166,8 +166,8 @@ def getHistoPeruser(connection, db, table, user, verbose):
 		valors.append(i[0])
 		rests.append(str(i[1]).replace('Restaurant', ''))
 	# Crear el pandas dataframe
-	df = pd.DataFrame({'Valor': tuple(valors), 
-		'Rest': tuple(rests)}, 
+	df = pd.DataFrame({'Valor': tuple(valors),
+		'Rest': tuple(rests)},
 		columns = ['Valor', 'Rest'])
 
 	print (df) # Msotra el dataframe per pantalla
@@ -176,5 +176,3 @@ def getHistoPeruser(connection, db, table, user, verbose):
 	plt.xlabel('RESTAUANTS')
 	plt.ylabel('FREQUENCY')
 	plt.show()
-	
-
