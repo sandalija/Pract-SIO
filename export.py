@@ -13,8 +13,8 @@ def calcularValor(usuari, restaurant):
     cursor =conn.cursor()
     cursor.execute(f"SELECT AvgValorations from SIO.users where User_name='{usuari}'")
     mitjanaUsuari=cursor.fetchall()
-    print(f"mitjana= {mitjanaUsuari[0][0]}")
-    cursor.execute(f"SELECT User_name, AvgValorations from SIO.users where AvgValorations >= '{mitjanaUsuari[0][0]}'-0.5 and AvgValorations<='{mitjanaUsuari[0][0]}'+0.5")
+    # print(f"mitjana= {mitjanaUsuari[0][0]}")
+    cursor.execute(f"SELECT User_name, AvgValorations from SIO.users where AvgValorations >= '{mitjanaUsuari[0][0]}'-1 and AvgValorations<='{mitjanaUsuari[0][0]}'+1")
     usuaris_propers=cursor.fetchall()
     total=0
     total_usuaris=len(usuaris_propers)
@@ -27,7 +27,8 @@ def calcularValor(usuari, restaurant):
         try:
             total+=valor[0][0]
         except IndexError:
-            print("No hi ha res")
+            # print("No hi ha res")
+            total_usuaris -= 1
        #print(f"el total=:{total}")
     return total/total_usuaris
     
@@ -50,10 +51,10 @@ def generateCSV(sourceFile, conn, dbTable, token):
             #cursor.execute(f"SELECT Valoration FROM {dbTable} WHERE User_name = '{row[0]}' AND Restaurant_name = '{row[1]}'")
             #val = cursor.fetchall()
             # print(f'{row[0]};{row[1]};{val[0][0]} ')
-            print(f'{row[0]};{row[1]};{resultat} ')
+            # print(f'{row[0]};{row[1]};{resultat} ')
             predictions.write(f'{row[0]};{row[1]};{resultat}\n')
             line_count += 1
-        print(f'Processed {line_count} lines.')
+        # print(f'Processed {line_count} lines.')
     predictions.close()
 
 

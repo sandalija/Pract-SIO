@@ -14,11 +14,11 @@ conn = iDB.__connectDB__('localhost', 'SIO', 'user', 'user')
 
 # Insertar en la DB.
 # Descomentar per insertar
-#loadCSV('/home/sergio/Pract-SIO/dataset.csv', conn, 'SIO', 'valorations')
+iDB.loadCSV('./dataset.csv', conn, 'SIO', 'valorations')
 
 # Inicializamos el número de usuariis (iDB.allUser)
 iDB.__getUsersName__(conn, 'SIO', 'valorations')
-
+""" 
 # Vaig ficar això de manera que podem anar testejant la funció si mode == 1
 # Si no és 1, hauria de executrar-se lo que sería el main final.
 modo = int(input('Enter your input:'))
@@ -46,15 +46,13 @@ else:
     #print(funcageUser)
 
     # Mode in general
-    """
     # PETARÁ
-    modeAll = func.getAllMode(conn, 'SIO', 'users', True)
-    print ("\nMode: " + str(modeAll))
-    """
+    #modeAll = func.getAllMode(conn, 'SIO', 'users', True)
+    # print ("\nMode: " + str(modeAll))
 
     # Mode per user
     modeRest = func.getModePerUser(conn, 'SIO', 'users', 'User1', True)
     print ("\nMode: " + str(modeRest))
-
+ """
 
 print ("end")

@@ -27,3 +27,7 @@ CREATE TABLE IF NOT EXISTS valorations
     FOREIGN KEY (Restaurant_name) REFERENCES restaurants (Restaurant_name),
     Primary key(Restaurant_name, User_name)
 ) Engine = InnoDB;
+
+ALTER TABLE users ADD AvgValorations FLOAT;
+ALTER TABLE users ADD AvgValorations FLOAT;
+
