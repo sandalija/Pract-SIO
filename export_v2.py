@@ -5,7 +5,7 @@ import threading
 
 
 
-sourceFile = './prediccionscsv'
+sourceFile = './prediccions.csv'
 dbTable = 'SIO.valorations'
 token = 'prediccions'
 
