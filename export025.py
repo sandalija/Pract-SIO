@@ -6,7 +6,7 @@ import init_DB as iDB
 sourceFile = './PlantillaPrediccions.csv'
 conn = iDB.__connectDB__('localhost', 'SIO', 'user', 'user')
 dbTable = 'SIO.valorations'
-token = 'prediccions'
+token = 'prediccions025'
 
 
 def calcularValor(usuari, restaurant):
@@ -14,7 +14,7 @@ def calcularValor(usuari, restaurant):
     cursor.execute(f"SELECT AvgValorations from SIO.users where User_name='{usuari}'")
     mitjanaUsuari=cursor.fetchall()
     # print(f"mitjana= {mitjanaUsuari[0][0]}")
-    cursor.execute(f"SELECT User_name, AvgValorations from SIO.users where AvgValorations >= '{mitjanaUsuari[0][0]}'-0.5 and AvgValorations<='{mitjanaUsuari[0][0]}'+0.5")
+    cursor.execute(f"SELECT User_name, AvgValorations from SIO.users where AvgValorations >= '{mitjanaUsuari[0][0]}'-0.25 and AvgValorations<='{mitjanaUsuari[0][0]}'+0.25")
     usuaris_propers=cursor.fetchall()
     total=0
     total_usuaris=len(usuaris_propers)
