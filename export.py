@@ -14,7 +14,7 @@ def calcularValor(usuari, restaurant):
     cursor.execute(f"SELECT AvgValorations from SIO.users where User_name='{usuari}'")
     mitjanaUsuari=cursor.fetchall()
     # print(f"mitjana= {mitjanaUsuari[0][0]}")
-    cursor.execute(f"SELECT User_name, AvgValorations from SIO.users where AvgValorations >= '{mitjanaUsuari[0][0]}'-0.5 and AvgValorations<='{mitjanaUsuari[0][0]}'+0.5")
+    cursor.execute(f"SELECT User_name, AvgValorations from SIO.users where AvgValorations >= '{mitjanaUsuari[0][0]}'-0.25 and AvgValorations<='{mitjanaUsuari[0][0]}'+0.25")
     usuaris_propers=cursor.fetchall()
     total=0
     total_usuaris=len(usuaris_propers)
@@ -51,8 +51,9 @@ def generateCSV(sourceFile, conn, dbTable, token):
             #cursor.execute(f"SELECT Valoration FROM {dbTable} WHERE User_name = '{row[0]}' AND Restaurant_name = '{row[1]}'")
             #val = cursor.fetchall()
             # print(f'{row[0]};{row[1]};{val[0][0]} ')
-            # print(f'{row[0]};{row[1]};{resultat} ')
-            predictions.write(f'{row[0]};{row[1]};{resultat}\n')
+            print(f'{row[0]};{row[1]};{resultat} ')
+            puntuacio=round(resultat,4)
+            predictions.write(f'{row[0]};{row[1]};{puntuacio}\n')
             line_count += 1
         # print(f'Processed {line_count} lines.')
     predictions.close()
